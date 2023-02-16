@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Container, Image } from "react-bootstrap";
-import { Grid, Box, Button } from "@mui/material";
+import { Grid, Box, Button, Avatar } from "@mui/material";
 import { Navbar, Modal, Nav } from "react-bootstrap";
 // import logo from "../../assets/images/logo.png";
 // import droplogo from "../../assets/images/navdropdownicon.svg";
 // import plusicon from "../../assets/images/plusicon.png";
+import Dropdown from "react-bootstrap/Dropdown";
+import EditProfile from "../../components/modals/EditProfile";
 import "./navbar.css";
 import { BiSearch } from "react-icons/bi";
 import { AiFillPlusCircle } from "react-icons/ai";
@@ -16,7 +18,7 @@ import { BsList } from "react-icons/bs";
 import textlogo from "../../assets/metaverselogo.svg";
 import WalletConnect from "../modals/walletConnect";
 import { useNavigate, useLocation } from "react-router-dom";
-import SignInmodal from "../modals/SignInmodal";
+// import SignInmodal from "../modals/SignInmodal";
 import { useDispatch, useSelector } from "react-redux";
 import { connectFailed } from "../../redux/Action";
 // import { toast,ToastContainer } from "react-toastify";
@@ -26,7 +28,7 @@ function Newnavbar() {
 
   const dispatch = useDispatch();
   const wallet = useSelector((state) => state.WalletConnect);
-
+  const { state } = useLocation();
   let width = window.innerWidth;
   const navigate = useNavigate();
   const location = useLocation();
@@ -36,8 +38,10 @@ function Newnavbar() {
   const [logOut, setLogout] = useState(false);
   const [typewalletConnected, setTypewalletconnected] = useState("");
   const [collectionDirection, setCollectionsDirection] = useState([]);
+  const [userData , setUserData] = useState("");
+  const [usersData, setUsersdata] = useState("");
   // const LoginType = localStorage.getItem("@logintype");
-
+  
   const change = async () => {
     if (val === true) {
       setval(false);
@@ -78,13 +82,44 @@ function Newnavbar() {
       let response = await getMethod({ url });
       if (response.status) {
         let result = response.result.filter((val) => val.walletAddress === wallet.address);
+        userDatas();
         setCollectionsDirection(result);
+
       }
     }
     catch (e) {
       console.log("error in getcollections", e);
     }
+    
   }
+  const userDatas = async () => {
+    var raw = JSON.stringify({
+      walletAddress: wallet.address
+    });
+    var requestOptions = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: raw,
+      redirect: "follow"
+    };
+    
+    fetch(process.env.REACT_APP_BACKEND_URL +"singleusers", requestOptions)
+      .then(response => response.text())
+      .then(result =>{
+        const Data =JSON.parse(result)
+        console.log("result",Data)
+        if(Data.result===null){
+          console.log("connect wallet")
+        }
+        setUserData(Data.result);
+      })
+      .catch(error => console.log("error", error));
+    
+  }
+
 
   const errorDiv = () => {
     return <p>Wallet Disconnected!</p>;
@@ -94,11 +129,25 @@ function Newnavbar() {
     web3Modal.clearCachedProvider();
     dispatch(connectFailed(errorDiv()));
   };
-
+  console.log("userData",userData)
   useEffect(() => {
     getCollections();
+    
   }, [wallet]);
-
+  const getUsers = async () => {
+    try {
+      let url = "viewUser";
+      let response = await getMethod({ url });
+      if (response.status) {
+        // const data = response.result.filter((val) => val.walletAddress === wallet.address);
+        const data = state
+        setUsersdata(data.name);
+      }
+    }
+    catch (e) {
+      console.log("error in addusers", e);
+    }
+  };
   return (
     <div>
       <Navbar collapseOnSelect expand="lg">
@@ -120,19 +169,19 @@ function Newnavbar() {
             </>) : (<></>)}
           </>)}
           {val === false ? (<>
-            <Navbar.Collapse id="responsive-navbar-nav" className="">
-              <Nav className="mx-auto w-100 justify-content-center">
+            <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-center">
+              <Nav className="mx-auto w-50 justify-content-around">
                 <Nav.Link>
-                  <h6 className="text-light m-0 pointer textsbluehovering" role="presentation" onClick={() => navigate("/activity")}>Activity</h6>
+                  <h6 className={location.pathname === "/activity" ? "click m-0 textsbluehovering pointer":"text-light m-0 textsbluehovering pointer"} role="presentation"  onClick={() => navigate("activity")}>Activity</h6>
                 </Nav.Link>
                 <Nav.Link className="mx-4">
-                  <h6 className="text-light m-0 textsbluehovering pointer" role="presentation" onClick={() => navigate("/collections")}>Collections</h6>
+                  <h6 className={location.pathname === "/collections" ? "click textsbluehovering pointer m-0":"text-light m-0 textsbluehovering pointer " }role="presentation" onClick={() => navigate("collections")}>Collections</h6>
                 </Nav.Link>
               </Nav>
-              <Nav className="mx-auto justify-content-between align-items-center w-100">
-                <Nav.Link className="nav-input">
-                  <input placeholder="Search" />
-                  <BiSearch style={{ color: "#707470" }} size={18} />
+              <Nav className="mx-auto justify-content-center align-items-center w-100">
+                <Nav.Link className="nav-input search_Bar">
+                  <input placeholder="Search"  className="text-bold input_Color "/>
+                  <BiSearch style={{ color: "#707470" }} className="Search_Icon" size={20} />
                 </Nav.Link>
                 <Nav.Link className="buildernavlink">
                   <Button className="btns btnsbg radius-md text-bold" onClick={() => { !wallet.connected ? (<>{connect("builter")}</>) : (<>{handleBuilters()}</>) }}>
@@ -145,22 +194,37 @@ function Newnavbar() {
                 </Nav.Link>
                 <Nav.Link className="connectnavlink">
                   {!wallet.connected ? (<>
-                    <Button className="connectpad" onClick={() => connect("wallet")}>Connect Wallet</Button>
+                    <Button className="connectpad w-100" onClick={() => connect("wallet")}>Connect Wallet</Button>
                   </>) : (<>
-                    <button
-                      className="btns disconnectbtn w-auto d-grid"
-                      onClick={disconnect}
-                    >
-                      <small className="px-2 py-1 text-white">{wallet.address?.slice(0, 5) + "..." + wallet.address?.slice(-5)}</small>
-                      {/* <small className="px-2 text-white">Disconnect</small> */}
-                    </button>
+                    <Dropdown >
+                      <Dropdown.Toggle  className="connectpad_prof ">
+                        {userData === null ?<Avatar className="m-1 "/>: userData.profilePic ? <Image src={process.env.REACT_APP_S3_LINK+userData.profilePic } className="img-fluid rounded-circle" style={{height:"px",width:"50px"}} alt="Profile"  />
+                          : <Image src={process.env.REACT_APP_DEFAULT_PROFILE} className="img-fluid rounded-circle" style={{height:"45px",width:"50px"}} alt="homeimg"/> }
+                        
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu className="bg-transparent  border border-success  ">
+                        
+                        <Dropdown.Item href="#/action-1"><button
+                          className="btns connectpad_prof w-auto d-grid"
+                          onClick={disconnect}
+                        >
+                          {/* <small className="px-2 py-1 text-white">{wallet.address?.slice(0, 5) + "..." + wallet.address?.slice(-5)}</small> */}
+                          <small className="px-2 text-white">Disconnect</small>
+                        </button></Dropdown.Item>
+                        <Dropdown.Item className="text-light" onClick={()=>{navigate("/profile",{state:{userProfile:userData}})}}>Profile</Dropdown.Item>
+                        <EditProfile openEditmodal={show} setEditmodal={setShow} getUsers={getUsers} usersData={usersData} />
+
+                        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                    
                     {/* <Button className="connectpad" onClick={disconnect}>Disconnect Wallet</Button> */}
                   </>)}
                 </Nav.Link>
               </Nav>
             </Navbar.Collapse>
           </>) : (<>
-            <Grid lg={12} xs={12} container alignItems="flex-end" direction="column" className="mt-3 mr-3">
+            <Grid lg={12} xs={12} container alignItems="flex-end" direction="column" className="mt-3">
               <h6 className="text-light m-0 pointer textsbluehovering" role="presentation" onClick={() => navigate("/activity")}>Activity</h6>
               <h6 className="text-light m-0 mt-2 textsbluehovering pointer" role="presentation" onClick={() => navigate("/collections")}>Collections</h6>
               <Grid lg={4.4} xs={4.4} container justifyContent="flex-end" className="mt-2">
@@ -192,7 +256,7 @@ function Newnavbar() {
       </Navbar>
 
       <WalletConnect openWallet={open} setOpenWallet={setOpen} value={typewalletConnected} />
-      <SignInmodal openSignupmodal={show} setSignupmodal={setShow} />
+      {/* <SignInmodal openSignupmodal={show} setSignupmodal={setShow} /> */}
       <Modal size="md" aria-labelledby="contained-modal-title-vcenter" show={logOut} centered>
         <Box className="signupmodal" sx={{ padding: "6% 4%" }}>
           <Grid lg={12} xs={12} container justifyContent="center" alignItems="center">

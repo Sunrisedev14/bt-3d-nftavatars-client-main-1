@@ -147,7 +147,7 @@ function Collections() {
         </Fade>
       </Container>
       <Fade bottom>
-        <Grid lg={12} xs={12} spacing={{ xs: 0, lg: 4 }} container className="" justifyContent="" sx={{ padding: "0% 5.6%" }}>
+        <Grid lg={12} xs={12} spacing={{ xs: 0, lg: 4 }} container className="mt-4" justifyContent="" sx={{ padding: "0% 5.6%" }}>
           {totalCollections.length !== 0 ? (<>
             {totalCollections.map((item) => {
               return (<>

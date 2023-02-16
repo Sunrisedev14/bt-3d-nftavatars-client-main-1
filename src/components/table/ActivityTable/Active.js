@@ -17,7 +17,7 @@ const ActivesTable = ({ ActiveTabledata }) => {
   const navigate = useNavigate();
 
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -122,7 +122,7 @@ const ActivesTable = ({ ActiveTabledata }) => {
           <Grid lg={12} xs={12} container justifyContent="flex-end">
             <TablePagination className="tablepaginationglobal"
               sx={{ color: "#fff" }}
-              rowsPerPageOptions={[5, 10, 15, 20, 25, 50, 100]}
+              rowsPerPageOptions={[]}
               component="div"
               count={ActiveTabledata?.length}
               rowsPerPage={rowsPerPage}

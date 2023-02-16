@@ -14,6 +14,8 @@ import CreateNft from "../pages/CreateNFT/Createnft";
 import CreateCollection from "../pages/Createcollection/Createcollection";
 import MyCollections from "../pages/Createcollection/MyCollections";
 import AllNfts from "../pages/NFTlist/TotalNfts";
+import CreateAvatar from "../pages/CreateNFT/Create3D";
+
 
 function Approutes() {
   // const location = useLocation();
@@ -33,12 +35,14 @@ function Approutes() {
           <Route path="/nftdetails/:id" element={<NFTDetails />} />
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/connectwallet" element={<WalletConnect />} />
-          <Route path="/activity" element={<Activity />} />
-          <Route path="/nft/create" element={<CreateNft />} />
+          <Route path="/activity"  element={<Activity />} />
+          <Route path="/nft/Create" element={<CreateNft />} />
+          <Route path="/nft/Create3D" element={<CreateAvatar />}/>
           <Route path="/collection/create" element={<CreateCollection />} />
           <Route path="/collection/mycollections" element={<MyCollections />} />
           <Route path="/privacypolicy" element={<Privacy />} />
           <Route path="/footer" element={<Footer />} />
+          
         </Routes>
       </>
     </div>

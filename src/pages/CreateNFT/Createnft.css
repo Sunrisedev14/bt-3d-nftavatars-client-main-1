@@ -1,12 +1,20 @@
 .createNFT {
     width: 100% !important;
-    height: 350px;
-    padding: 0 0 1% 0 !important;
-    padding: 2% 4% !important;
+    height: 450px;
     box-Shadow: none;
     background-image: linear-gradient(to top, rgb(22 22 45), rgb(171 175 184 / 18%));
     border-radius: 4% !important;
     display: flex;
+    align-items: center;
+}
+.afterNFT{
+  width: 100% !important;
+  height: 450px;
+  box-Shadow: none;
+  /* background-image: linear-gradient(to top, rgb(22 22 45), rgb(171 175 184 / 18%)); */
+  border-radius: 4% !important;
+  display: flex;
+  align-items: center;
 }
 
 .createNFT1 {
@@ -200,4 +208,7 @@
 
   .collectiontextinbold{
     font-weight: 600;
+  }
+  .type_pad{
+    padding: 15px 100px 15px 100px !important
   }

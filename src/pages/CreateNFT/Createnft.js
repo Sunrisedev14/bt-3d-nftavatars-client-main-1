@@ -14,6 +14,9 @@ import { getMethod, postMethod } from "../../apis/index";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ReactS3Client } from "../../helpers";
+import { Modal} from "react-bootstrap";
+import "../../components/modals/modal.css";
+
 
 function Createnft() {
 
@@ -50,6 +53,7 @@ function Createnft() {
   const [blockchainType, setBlockchainType] = useState(EthList[1]?.value);
   const [unlockableContent, setUnlockableContent] = useState("");
   const [users,setUsers] = useState("");
+  const [show, setShow] = useState(false);
 
   const handleadd = (val) => {
     if (val === "add") {
@@ -228,6 +232,7 @@ function Createnft() {
     let filename = "nftImage" + "_" + Date.now() + extension;// eslint-disable-line
     const data = await ReactS3Client.uploadFile(file, filename);
     setNftImage(data.key);
+    setShow(false);
   };
 
   console.log("nftsdata", nftImage, collectionName, blockchainType);
@@ -248,25 +253,17 @@ function Createnft() {
               <Grid lg={12} xs={12} container>
                 <font className="text-light">Image, Video, Audio, or 3D Model<span className="text-danger">*</span></font>
               </Grid>
-              <Grid lg={12} xs={12} container>
+              <Grid lg={12} xs={12} container style={{cursor:"pointer"}}>
                 <Grid lg={11} xs={12} container>
                   {!nftImage ? (<>
-                    <Box className="createNFT" >
-                      <Grid lg={12} xs={12} container justifyContent="center" alignItems="center">
-                        <label className="gray-text" style={{ margin: "0px", cursor: "pointer" }} htmlFor="upload-photo" >
-                          <img src={Addimg} alt="nft" />
-                        </label>
-                        <input style={{ display: "none" }} id="upload-photo" type="file" accept="image/*" onChange={(e) => onNftImage(e.target.files[0])} />
+                    <Box className="createNFT" onClick={() => setShow(true)} >
+                      <Grid lg={12} xs={12} container justifyContent="center" alignItems="center" >
+                        <img src={Addimg} alt="nft" />
                       </Grid>
                     </Box>
                   </>) : (<>
-                    <Box className="createNFT" sx={{ overflow: "hidden" }}>
-                      <Grid lg={12} xs={12} container justifyContent="center" alignItems="center">
-                        <label className="gray-text" style={{ margin: "0px", cursor: "pointer", color: "aliceblue" }} htmlFor="upload-photo" >
-                          <img src={process.env.REACT_APP_S3_LINK + nftImage} alt="featureimg" />
-                        </label>
-                        <input style={{ display: "none" }} id="upload-photo" type="file" accept="image/*" name="feature" onChange={(e) => onNftImage(e.target.files[0])} />
-                      </Grid>
+                    <Box className="afterNFT " sx={{ overflow: "hidden" }} container justifyContent="center" alignItems="center" onClick={() => setShow(true)} >
+                      <img src={process.env.REACT_APP_S3_LINK + nftImage} alt="featureimg" className="img-fluid rounded " onChange={()=>{setShow(false)}} />
                     </Box>
                   </>)}
                 </Grid>
@@ -742,6 +739,38 @@ function Createnft() {
           </Grid>
         </Grid>
       </Fade>
+      <Modal
+        show={show}
+        onHide={() => setShow(false)}
+        dialogClassName="modal-50w" 
+        size="xs"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        {/* <Modal.Header closeButton>
+          <Modal.Title id="example-custom-modal-styling-title">
+            Custom Modal Styling
+          </Modal.Title>
+        </Modal.Header> */}
+        <Modal.Body className="  connectpad ">
+          <ul className="text-center list-unstyled">
+            <li>
+              <label className="gray-text " style={{ margin: "0px", cursor: "pointer" }} htmlFor="upload-photo" >
+                <img src={Addimg} alt="nft" /> Upload
+              </label>
+              <input style={{ display: "none" }} id="upload-photo" type="file" accept="image/*" className="" onChange={(e) => onNftImage(e.target.files[0])} />
+            
+            </li> 
+            <li>
+              <button className="btn text-light mt-4" onClick={()=>navigate("/nft/create3D")}>Create 3D</button>
+            </li>
+            
+          </ul>
+          <button className="btn btn-danger float-end" onClick={()=>setShow(false)}>Close</button>
+          
+         
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

@@ -12,9 +12,9 @@ function Activity() {
 
   const ActivitySelect = [
     { value: "All", label: "All" },
-    { value: "1Day", label: "1Day" },
-    { value: "2Days", label: "2Days" },
-    { value: "7Days", label: "7Days" },
+    { value: "Today", label: "Today" },
+    { value: "Yesterday", label: "Yesterday" },
+    { value: "1Week", label: "1Week" },
   ];
 
   const [clickChange, setClickchange] = useState("");
@@ -97,21 +97,37 @@ function Activity() {
   };
 
   const handleSelectChange = (e) => {
-    console.log("e", e, ActiveTableData1);
+    var date = new Date(new Date()).getTime();
+    date = new Date(date);
+    var hours = date.getHours();
+    var minutes = "0" + date.getMinutes();
+    var formattedTime = date + ":" + hours + ":" + minutes.substr(-2)
+    const setFromDate =formattedTime.slice(0,16) +" 00:00:01 GMT+0530 (India Standard Time)";
+    const setToDate =formattedTime.slice(0,16) + " 23:59:59 GMT+0530 (India Standard Time)";
+    const startDate = (parseInt((new Date(setFromDate).getTime())/1000));
+    const endDate = (parseInt((new Date(setToDate).getTime())/1000));
+    const yesterdayFrom =(parseInt((new Date(setFromDate).getTime()/1000)-86400))
+    const yesterdayTo =(parseInt((new Date(setToDate).getTime()/1000)-86400))
+    const WeekFrom =(parseInt((new Date(setFromDate).getTime()/1000)-604800 ))
+    const WeekTo =(parseInt((new Date(setToDate).getTime()/1000)));
     if (e === "All") {
       setActiveTableData(ActiveTableData1);
     }
-    else if (e === "1Day") {
-      let data = ActiveTableData1.filter((val) => (Math.abs(parseInt((new Date(val?.createdOn).getTime() - new Date().getTime()) / (1000 * 3600 * 24))))+"Day" === "0Day" && "1Day");
-      setActiveTableData(data);
+    else if (e === "Today") {
+      var TodayData = ActiveTableData1.filter(a => { var datefull = Math.abs(new Date((a.createdOn)).getTime()/1000);
+        return (datefull >= startDate && datefull <= endDate); });
+      console.log("TodayData",TodayData);
+      setActiveTableData(TodayData);
     }
-    else if (e === "2Days") {
-      let data = ActiveTableData1.filter((val) => (Math.abs(parseInt((new Date(val?.createdOn).getTime() - new Date().getTime()) / (1000 * 3600 * 24))))+"Days" === "2Days");
-      setActiveTableData(data);
+    else if (e === "Yesterday") {
+      var yesterdayData = ActiveTableData1.filter(a => { var datefull = Math.abs(new Date((a.createdOn)).getTime()/1000);
+        return (datefull >= yesterdayFrom && datefull <= yesterdayTo); });
+      setActiveTableData(yesterdayData);
     }
-    else if (e === "7Days") {
-      let data = ActiveTableData1.filter((val) => (Math.abs(parseInt((new Date(val?.createdOn).getTime() - new Date().getTime()) / (1000 * 3600 * 24))))+"Days" === "7Days");
-      setActiveTableData(data);
+    else if (e === "1Week") {
+      var OneweekData = ActiveTableData1.filter(a => { var datefull = Math.abs(new Date((a.createdOn)).getTime()/1000);
+        return (datefull >= WeekFrom && datefull <= WeekTo); });
+      setActiveTableData(OneweekData);
     }
   };
 
@@ -135,13 +151,13 @@ function Activity() {
         </Grid>
       </Fade>
       <Grid lg={12} xs={12} container justifyContent="space-between" alignItems="center" sx={{ padding: "1% 7%" }}>
-        <Grid lg={3.5} xs={12} className="nav-input spaceinmobileviewforprofilepage1" container direction="row" justifyContent="center">
+        <Grid lg={3.5} xs={12} className="nav-input spaceinmobileviewforprofilepage1  search_Bar" container direction="row" justifyContent="center">
           {clickChange === "Activity" ? (<>
-            <input placeholder="Search" onChange={(e) => handlesearch(e.target.value)} />
+            <input placeholder="Search" className="input_Color" onChange={(e) => handlesearch(e.target.value)} />
           </>) : (<>
-            <input placeholder="Search" onChange={(e) => handleSearch1(e.target.value)} />
+            <input placeholder="Search" className="input_Color" onChange={(e) => handleSearch1(e.target.value)} />
           </>)}
-          <span style={{ width: "10%" }}><RiSearchFill className="text-muted" size={25} /></span>
+          <span style={{ width: "10%" }}><RiSearchFill className="text-muted Search_Icon1" size={25} /></span>
         </Grid>
         <Grid lg={2} xs={12} container className="">
           {clickChange === "Activity" ? (<>
@@ -160,6 +176,7 @@ function Activity() {
               styles={customStyles}
               className="w-100"
               placeholder="All"
+              options={ActivitySelect}
               components={{
                 IndicatorSeparator: () => null,
               }}

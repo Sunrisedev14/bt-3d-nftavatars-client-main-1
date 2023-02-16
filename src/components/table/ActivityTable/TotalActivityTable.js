@@ -17,7 +17,7 @@ const TotalActivesTables = ({ ActiveTabledata }) => {
   const navigate = useNavigate();
   const wallet = useSelector((state) => state.WalletConnect);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
 
   console.log("ActiveTabledata",ActiveTabledata);
   const handleChangePage = (event, newPage) => {
@@ -123,7 +123,7 @@ const TotalActivesTables = ({ ActiveTabledata }) => {
           <Grid lg={12} xs={12} container justifyContent="flex-end">
             <TablePagination className="tablepaginationglobal"
               sx={{ color: "#fff" }}
-              rowsPerPageOptions={[5, 10, 15, 20, 25, 50, 100]}
+              rowsPerPageOptions={[]}
               component="div"
               count={ActiveTabledata?.length}
               rowsPerPage={rowsPerPage}

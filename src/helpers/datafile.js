@@ -604,7 +604,7 @@ export const nftOffers = [
   {
     id: "1",
     text1: "0.0878 ETH",
-    text2: "$18,640.00",
+    text2: "18,640.00",
     text3: "0.00",
     text4: "Sofietje Boksem",
     text5: "2 Days",
@@ -613,7 +613,7 @@ export const nftOffers = [
   {
     id: "2",
     text1: "0.0878 ETH",
-    text2: "$18,640.00",
+    text2: "18,640.00",
     text3: "0.00",
     text4: "Kimmy McIlmorie",
     text5: "2 Days",
@@ -622,7 +622,7 @@ export const nftOffers = [
   {
     id: "3",
     text1: "0.0878 ETH",
-    text2: "$18,640.00",
+    text2: "18,640.00",
     text3: "0.00",
     text4: "Bithika Abhedananda",
     text5: "2 Days",
@@ -631,7 +631,7 @@ export const nftOffers = [
   {
     id: "4",
     text1: "0.0878 ETH",
-    text2: "$18,640.00",
+    text2: "18,640.00",
     text3: "0.00",
     text4: "Wen Yahui",
     text5: "2 Days",
@@ -643,7 +643,7 @@ export const nftListings = [
   {
     id: "1",
     text1: "0.0878 ETH",
-    text2: "$18,640.00",
+    text2: "18,640.00",
     text3: "0.1",
     text4: "Sofietje Boksem",
     text5: "2 Days",
@@ -652,7 +652,7 @@ export const nftListings = [
   {
     id: "2",
     text1: "0.0878 ETH",
-    text2: "$18,640.00",
+    text2: "18,640.00",
     text3: "0.1",
     text4: "Kimmy McIlmorie",
     text5: "2 Days",
@@ -661,7 +661,7 @@ export const nftListings = [
   {
     id: "3",
     text1: "0.0878 ETH",
-    text2: "$18,640.00",
+    text2: "18,640.00",
     text3: "0.1",
     text4: "Bithika Abhedananda",
     text5: "2 Days",
@@ -670,7 +670,7 @@ export const nftListings = [
   {
     id: "4",
     text1: "0.0878 ETH",
-    text2: "$18,640.00",
+    text2: "18,640.00",
     text3: "0.1",
     text4: "Wen Yahui",
     text5: "2 Days",
@@ -685,7 +685,7 @@ export const nftBids = [
     img1: require("../assets/NFTimages/bidsdownload.svg").default,
     text1: "Sofietje Boksem",
     text2: "034XFF5889K",
-    text3: "$18,640.00",
+    text3: "18,640.00",
     action: "details",
     heading: "Descriptions",
     head: "Contract address",
@@ -706,7 +706,7 @@ export const nftBids = [
     img1: require("../assets/NFTimages/bidsdownload.svg").default,
     text1: "Obasey Chidy",
     text2: "08XFF58A89FG",
-    text3: "$18,640.00",
+    text3: "18,640.00",
     action: "details",
     heading: "Descriptions",
     head: "Contract address",
@@ -726,7 +726,7 @@ export const nftBids = [
     img1: require("../assets/NFTimages/bidsdownload.svg").default,
     text1: "Shirai Subaru",
     text2: "564FGHKLEK",
-    text3: "$18,640.00",
+    text3: "18,640.00",
     action: "details",
     heading: "Descriptions",
     head: "Contract address",
@@ -746,7 +746,7 @@ export const nftBids = [
     img1: require("../assets/NFTimages/bidsdownload.svg").default,
     text1: "Mgbankwo Orjee",
     text2: "564FGHKLEK",
-    text3: "$18,640.00",
+    text3: "18,640.00",
     action: "details",
     heading: "Descriptions",
     head: "Contract address",
@@ -908,7 +908,7 @@ export const Ranking = [
     position: "#1",
     authorprofile: require("../assets/images/robotimg2.svg").default,
     text: "Aliean bot world",
-    baseprice: "$3300",
+    baseprice: "3300",
     oneday: "+1.675%",
     sevenday: "-1.675%"
   },
@@ -917,7 +917,7 @@ export const Ranking = [
     position: "#2",
     authorprofile: require("../assets/images/robotimg2.svg").default,
     text: "Aliean bot world",
-    baseprice: "$3300",
+    baseprice: "3300",
     oneday: "+1.675%",
     sevenday: "-1.675%"
   },
@@ -926,7 +926,7 @@ export const Ranking = [
     position: "#3",
     authorprofile: require("../assets/images/robotimg2.svg").default,
     text: "Aliean bot world",
-    baseprice: "$3300",
+    baseprice: "3300",
     oneday: "+1.675%",
     sevenday: "-1.675%"
   },
@@ -935,7 +935,7 @@ export const Ranking = [
     position: "#4",
     authorprofile: require("../assets/images/robotimg2.svg").default,
     text: "Aliean bot world",
-    baseprice: "$3300",
+    baseprice: "3300",
     oneday: "+1.675%",
     sevenday: "-1.675%"
   },
@@ -944,7 +944,7 @@ export const Ranking = [
     position: "#5",
     authorprofile: require("../assets/images/robotimg2.svg").default,
     text: "Aliean bot world",
-    baseprice: "$3300",
+    baseprice: "3300",
     oneday: "+1.675%",
     sevenday: "-1.675%"
   },
@@ -953,7 +953,7 @@ export const Ranking = [
     position: "#6",
     authorprofile: require("../assets/images/robotimg2.svg").default,
     text: "Aliean bot world",
-    baseprice: "$3300",
+    baseprice: "3300",
     oneday: "+1.675%",
     sevenday: "-1.675%"
   },
@@ -962,7 +962,7 @@ export const Ranking = [
     position: "#7",
     authorprofile: require("../assets/images/robotimg2.svg").default,
     text: "Aliean bot world",
-    baseprice: "$3300",
+    baseprice: "3300",
     oneday: "+1.675%",
     sevenday: "-1.675%"
   },
@@ -971,7 +971,7 @@ export const Ranking = [
     position: "#8",
     authorprofile: require("../assets/images/robotimg2.svg").default,
     text: "Aliean bot world",
-    baseprice: "$3300",
+    baseprice: "3300",
     oneday: "+1.675%",
     sevenday: "-1.675%"
   },
@@ -980,7 +980,7 @@ export const Ranking = [
     position: "#9",
     authorprofile: require("../assets/images/robotimg2.svg").default,
     text: "Aliean bot world",
-    baseprice: "$3300",
+    baseprice: "3300",
     oneday: "+1.675%",
     sevenday: "-1.675%"
   },
@@ -989,7 +989,7 @@ export const Ranking = [
     position: "#10",
     authorprofile: require("../assets/images/robotimg2.svg").default,
     text: "Aliean bot world",
-    baseprice: "$3300",
+    baseprice: "3300",
     oneday: "+1.675%",
     sevenday: "-1.675%"
   },

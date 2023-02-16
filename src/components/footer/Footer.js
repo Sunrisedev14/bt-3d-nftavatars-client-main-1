@@ -187,7 +187,7 @@ function Footer() {
             </Grid>
           </Grid>
         </>) : location.pathname !== "/collection/create" && location.pathname !== "/nft/create" && location.pathname !== "/collections" && location.pathname !== "/allnfts"? (<>
-          <Grid lg={12} container justifyContent="center" className={location.pathname === "/activity" ? "footerpositionsfixed mb-3" : "footerpositionsabsoluted"}>
+          <Grid lg={12} container justifyContent="center" className={location.pathname === "/activity" ? "footerpositions mb-3" : "footerpositionsabsoluted"}>
             <font size={3} className="text-gray pointer text-center">{year} © All Rights Reserved By <span className="text-green text-gradient">Blockchain Technologies</span></font>
           </Grid>
         </>) : (<></>)}

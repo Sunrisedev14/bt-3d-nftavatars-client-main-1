@@ -21,22 +21,21 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CountdownTimer from "../../components/timer/CountDownTimer";
 
-function Userprofile({ status }) {
+function Userprofile() {
 
   let width = window.innerWidth;
   const wallet = useSelector((state) => state.WalletConnect);
-  const PF = require("../../assets/images/prf.png").default;
+  // const PF = require("../../assets/images/prf.png").default;
 
   const items = require("../../assets/NFTimages/Items.svg").default;
   const Followers = require("../../assets/NFTimages/followers.svg").default;
   const nfticons2 = require("../../assets/images/ethereumimg.svg").default;
 
-  // const navigate = useNavigate();
-  const { state } = useLocation();
-  const ProfileData = state?.Profiledata;
-  const ActiveData = state?.ActiveProfiledata;
-  const BidsProfileDta = state?.BidsProfileData;
-  const listTbProfileDta = state?.listTbProfileData;
+  const location = useLocation();
+
+  const HomeProfileData = location?.state?.userProfile;
+  console.log("home PORfile",HomeProfileData)
+
   const [usersData, setUsersdata] = useState("");
   const [profileNftData, setProfileNftData] = useState([]);
   const [profileNftData1, setProfileNftData1] = useState([]);
@@ -46,28 +45,7 @@ function Userprofile({ status }) {
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
   const [copyText, setCopyText] = useState(false);
-  const [ProfileDatas, setProfileDta] = useState("");
-  const [type, setType] = useState("");
 
-
-  const handleProfilesData = () => {
-    if (ProfileData) {
-      setType("profile1");
-      setProfileDta(ProfileData);
-    }
-    else if (ActiveData) {
-      setType("profile2");
-      setProfileDta(ActiveData);
-    }
-    else if (BidsProfileDta) {
-      setType("profile3");
-      setProfileDta(BidsProfileDta);
-    }
-    else if (listTbProfileDta) {
-      setType("profile4");
-      setProfileDta(listTbProfileDta);
-    }
-  };
   const dataTiming = async () => {
     setCopyText(true);
     const timer = setTimeout(() => {
@@ -81,9 +59,16 @@ function Userprofile({ status }) {
       let url = "viewUser";
       let response = await getMethod({ url });
       if (response.status) {
-        const data = response.result.filter((val) => val.walletAddress === wallet.address);
-        setUsersdata(data[0]);
-        getNfts();
+        if (!HomeProfileData) {
+          const data = response.result.filter((val) => val.walletAddress === wallet.address);
+          setUsersdata(data[0]);
+          getNfts();
+        }
+        else {
+          const data = response.result.filter((val) => val.walletAddress === HomeProfileData?.walletAddress);
+          setUsersdata(data[0]);
+          getNfts();
+        }
       }
     }
     catch (e) {
@@ -96,26 +81,42 @@ function Userprofile({ status }) {
       let url = "GetNfts";
       let response = await getMethod({ url });
       if (response.status) {
-        const data = response.return.filter((val) => val.walletAddress === wallet.address);
-        const data1 = data.filter((val) => val.activityType === "transfer");
-        let fav = [];
-        response.return.map((val) => {// eslint-disable-line
-          let like = val.likes.filter((item) => item.walletAddress === wallet.address);
-          fav.push(...like)
-        });
-        let newFavArr = [...new Set(fav)];
-        setFavoritesaNftData(newFavArr);
-        setFavoritesaNftData1(response.return);
-        setProfileNftData(data);
-        setProfileNftData1(data1);
-        setProfileNftData2(data);
+        if (!HomeProfileData) {
+          const data = response.return.filter((val) => val.walletAddress === wallet.address);
+          const data1 = data.filter((val) => val.activityType === "transfer");
+          let fav = [];
+          response.return.map((val) => {// eslint-disable-line
+            let like = val.likes.filter((item) => item.walletAddress === wallet.address);
+            fav.push(...like)
+          });
+          let newFavArr = [...new Set(fav)];
+          setFavoritesaNftData(newFavArr);
+          setFavoritesaNftData1(response.return);
+          setProfileNftData(data);
+          setProfileNftData1(data1);
+          setProfileNftData2(data);
+        }
+        else {
+          const data = response.return.filter((val) => val.walletAddress === HomeProfileData?.walletAddress);
+          const data1 = data.filter((val) => val.activityType === "transfer");
+          let fav = [];
+          response.return.map((val) => {// eslint-disable-line
+            let like = val.likes.filter((item) => item.walletAddress === HomeProfileData?.walletAddress);
+            fav.push(...like)
+          });
+          let newFavArr = [...new Set(fav)];
+          setFavoritesaNftData(newFavArr);
+          setFavoritesaNftData1(response.return);
+          setProfileNftData(data);
+          setProfileNftData1(data1);
+          setProfileNftData2(data);
+        }
       }
     }
     catch (e) {
       console.log("error in getnfts", e);
     }
   };
-
 
   const [clickChange, setClickchange] = useState("");
   const allcollection = async (check) => {
@@ -138,7 +139,7 @@ function Userprofile({ status }) {
       setProfileNftData(data);
       setClickchange("Created");
     }
-    else if (check === "Activity" || status === "Activity") {
+    else if (check === "Activity") {
       setClickchange("Activity");
     }
     else if (check === "Auction") {
@@ -151,7 +152,7 @@ function Userprofile({ status }) {
 
   useEffect(() => {
     getUsers();
-    handleProfilesData();
+    // handleProfilesData();
     setClickchange("NFTs");
   }, [wallet.address]);
 
@@ -174,7 +175,7 @@ function Userprofile({ status }) {
       }
       else {
         let Datas = item.likes;
-        let values = Datas.filter((val) => val.walletAddress !== item.walletAddress);
+        let values = Datas.filter((val) => val.walletAddress !== wallet.address);
         let url = "updateLikes";
         let params = {
           nftId: item._id,
@@ -284,6 +285,7 @@ function Userprofile({ status }) {
     }
   };
 
+  console.log("profileNftData",profileNftData);
   return (
     <div className={width > 600 ? "Profilebgimg" : null}>
       <Navbar />
@@ -292,32 +294,31 @@ function Userprofile({ status }) {
         <Grid lg={6} xs={12} container justifyContent={{ lg: "flex-start", xs: "center" }} alignItems="center">
           <Grid lg={4} xs={4} container>
             {!usersData?.profilePic ? (<>
-              <Image src={PF} alt="user" fluid className="img-zoom-animation" />
+              <Image src={process.env.REACT_APP_DEFAULT_PROFILE} alt="user" fluid className="img-zoom-animation w-100 h-100" />
             </>) : (<>
               <Avatar src={process.env.REACT_APP_S3_LINK + usersData?.profilePic} alt="user" fluid className="img-zoom-animation w-100 h-100" />
             </>)}
-            {/* {!ProfileDatas || type === "profile4" ? (<>
-              <Image src={PF} alt="user" fluid className="img-zoom-animation" />
-            </>) : (<>
-              <Avatar src={type === "profile1" ? ProfileDatas?.img : type === "profile2" ? ProfileDatas?.authorprofile : type === "profile3" ? ProfileDatas?.img : ""} alt="user" fluid className="img-zoom-animation w-100 h-100" />
-            </>)} */}
           </Grid>
           <Grid lg={8} xs={12} container justifyContent="" alignItems="center">
             <Grid lg={5} xs={12} container justifyContent="space-between" alignItems={{ lg: "flex-start", xs: "center" }} direction="column" className="mx-2">
-              {!usersData?.userName ? (<></>) : (<>
+              {!usersData?.userName ? (<>
+                <h6 className="text-light m-0 pftext">{usersData?.walletAddress?.slice(0, 5) + "..." + usersData?.walletAddress?.slice(-5)}</h6>
+              </>) : (<>
                 <h6 className="text-light m-0 pftext">{usersData?.firstName + " " + usersData?.lastName}</h6>
-                <font className="text-info text-bold mt-2 mx-1" >@ {usersData?.userName}</font>
+                <font className="text-info text-bold mt-2 mx-1" >@ {usersData?.userName?.length > 10 ? usersData?.userName?.slice(0, 12) : usersData?.userName}</font>
               </>)}
             </Grid>
             <Grid lg={12} xs={12} container justifyContent="space-between" alignItems="" direction="row" className="mx-2">
-              <Grid lg={4} xs={4} container>
-                <button className="editbtpf mt-4" onClick={alertConnectWallet}><FiEdit className="mr-2" />Edit</button>
-              </Grid>
-              {wallet.connected ? (<>
-                <Grid lg={4} xs={4} container justifyContent="center" sx={{ position: "relative" }}>
-                  <button className="copybtpf mt-4" onClick={() => { navigator.clipboard.writeText(wallet.address); dataTiming(); }}>{wallet.address.slice(0, 5) + "..." + wallet.address.slice(-5)}<RiFileCopyLine className="mx-2" /></button>
-                  {copyText === true ? (<><h6 className="text-light text-bold" style={{ position: "absolute", top: "0" }}>Copied !</h6></>) : (<></>)}
+              {usersData?.walletAddress === wallet.address ? (<>
+                <Grid lg={4} xs={4} container>
+                  <button className="editbtpf mt-4" onClick={alertConnectWallet}><FiEdit className="mr-2" />Edit</button>
                 </Grid>
+                {wallet.connected ? (<>
+                  <Grid lg={4} xs={4} container justifyContent="center" sx={{ position: "relative" }}>
+                    <button className="copybtpf mt-4" onClick={() => { navigator.clipboard.writeText(wallet.address); dataTiming(); }}>{wallet.address.slice(0, 5) + "..." + wallet.address.slice(-5)}<RiFileCopyLine className="mx-2" /></button>
+                    {copyText === true ? (<><h6 className="text-light text-bold" style={{ position: "absolute", top: "0" }}>Copied !</h6></>) : (<></>)}
+                  </Grid>
+                </>) : (<></>)}
               </>) : (<></>)}
               <Grid lg={3} xs={12} container></Grid>
             </Grid>
@@ -341,13 +342,7 @@ function Userprofile({ status }) {
           <Grid lg={3} xs={4} container alignItems="center" className="mt-2">
             <Image src={Followers} fluid className="mb-4 img-zoom-animation" />
             <div className="d-grid mx-1">
-              {!ProfileDatas || type === "profile2" || type === "profile4" ? (<>
-                <h6 className="text-light m-0">1.2k</h6>
-              </>) : type === "profile1" ? (<>
-                <h6 className="text-light m-0">{ProfileDatas?.text4?.split(" ")[0] + ProfileDatas?.text4?.split(" ")[1]}</h6>
-              </>) : type === "profile3" ? (<>
-                <h6 className="text-light m-0">{ProfileDatas?.tokenID}k</h6>
-              </>) : (<></>)}
+              <h6 className="text-light m-0">1.2k</h6>
               <small className="nftlist-text text-bold">Followers</small>
             </div>
           </Grid>
@@ -356,7 +351,7 @@ function Userprofile({ status }) {
               <button className="volumebt">
                 <font size={4}>Volume  Price</font>
                 <img src={nfticons2} className="img-fluid mx-2" alt="user" />
-                <h5 className="text-light m-0">{!ProfileDatas || type === "profile1" ? (<>0 ETH</>) : type === "profile2" || type === "profile3" ? (<>{ProfileDatas?.ETH}</>) : type === "profile4" ? (<>{ProfileDatas?.text1}</>) : (<></>)}</h5>
+                <h5 className="text-light m-0">0 ETH</h5>
               </button>
             </Grid>
           </Grid>
@@ -381,13 +376,13 @@ function Userprofile({ status }) {
       </Grid>
       {clickChange === "Activity" ? (<>
         <Grid lg={12} xs={12} sx={{ padding: "0% 8%" }}>
-          <ProfileTable />
+          <ProfileTable HomeProfileData={profileNftData}/>
         </Grid>
       </>) : (<>
         <Grid lg={12} xs={12} container justifyContent="space-between" alignItems="center" sx={{ padding: "0% 8%" }}>
-          <Grid lg={3.5} xs={12} container sx={{ position: "relative" }} className="spaceinmobileviewforprofilepage1 nav-input">
-            <input placeholder="Search" onChange={(e) => handlesearch(e.target.value)} />
-            <BiSearch style={{ color: "#707470" }} size={18} />
+          <Grid lg={3.5} xs={12} container sx={{ position: "relative" }} className="search_Bar spaceinmobileviewforprofilepage1 nav-input">
+            <input placeholder="Search" className="input_Color" onChange={(e) => handlesearch(e.target.value)} />
+            <BiSearch style={{ color: "#707470" }} className="Search_Icon2" size={18} />
           </Grid>
           <Grid lg={2} xs={12} container className="spaceinmobileviewforprofilepage1">
             <Select

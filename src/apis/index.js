@@ -1,5 +1,6 @@
 //get request
 export const getMethod = async (item) => {
+
   try {
     const response = await fetch(process.env.REACT_APP_BACKEND_URL + item.url, {
       method: "GET",
@@ -16,6 +17,31 @@ export const getMethod = async (item) => {
         window.location.replace("/");
       }
     }
+    return json;
+  } catch (error) {
+    // console.log("get api error", error);
+    return false;
+  }
+};
+export const getMethods = async (item) => {
+  console.log("itmes",item)
+  try {
+    const response = await fetch(process.env.REACT_APP_BACKEND_URL + item.url,{
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        //   "x-access-token": item.authtoken,
+      },
+      body: JSON.stringify({walletAddress:item.params.walletAddress}),
+    });
+    const json = await response.json();
+    // if (json.success === false) {
+    //   if (json.message === "Token Expired") {
+    //     localStorage.clear();
+    //     window.location.replace("/");
+    //   }
+    // }
     return json;
   } catch (error) {
     // console.log("get api error", error);

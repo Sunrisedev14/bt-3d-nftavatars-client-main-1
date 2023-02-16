@@ -4,10 +4,13 @@ import "../table.css";
 import One from "../../../assets/NFTimages/1day.svg";
 import Fade from "react-reveal/Fade";
 import { useNavigate } from "react-router-dom";
+import { FaEthereum } from "react-icons/fa";
+
 const RankingTable = ({RankingData}) => {
+  console.log("RankingData",RankingData)
 
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -32,16 +35,16 @@ const RankingTable = ({RankingData}) => {
                     <font className="text-muted" size={3}>Position</font>
                   </TableCell>
                   <TableCell align="left" className="ntffooterdtbleindetails">
-                    <font className="text-muted" size={3}>Title</font>
+                    <font className="text-muted" size={3}>NFT</font>
                   </TableCell>
                   <TableCell align="left" className="ntffooterdtbleindetails">
                     <font className="text-muted" size={3}>Base price</font>
                   </TableCell>
                   <TableCell align="left" className="ntffooterdtbleindetails">
-                    <font className="text-muted" size={3}>Last 1day<img src={One} className="img-fluid mx-1" alt="activity" /></font>
+                    <font className="text-muted mx-2" size={3}>% <img src={One} className="img-fluid mx-1" alt="activity" /></font>
                   </TableCell>
                   <TableCell align="left" className="ntffooterdtbleindetails">
-                    <font className="text-muted" size={3}>Last 7day<img src={One} className="img-fluid mx-1" alt="activity" /></font>
+                    <font className="text-muted" size={3}>Owner<img src={One} className="img-fluid mx-1" alt="activity" /></font>
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -60,7 +63,8 @@ const RankingTable = ({RankingData}) => {
                       </TableCell>
                       <TableCell align="" sx={{ border: "none" }}>
                         <Grid lg={12} xs={12} container justifyContent="flex-start" alignItems="center">
-                          <font className="text-light ">{item.baseprice}</font>
+                          <FaEthereum style={{ color: "#8a2be2" }} />
+                          <font className="text-light ">{item.baseprice} ETH</font>
                         </Grid>
                       </TableCell>
                       <TableCell align="left" sx={{ border: "none" }}>
@@ -82,7 +86,7 @@ const RankingTable = ({RankingData}) => {
           <Grid lg={12} xs={12} container justifyContent="flex-end">
             <TablePagination className="tablepaginationglobal"
               sx={{color:"#fff"}}
-              rowsPerPageOptions={[5, 10, 15, 20, 25, 50, 100]}
+              rowsPerPageOptions={[]}
               component="div"
               count={RankingData.length}
               rowsPerPage={rowsPerPage}

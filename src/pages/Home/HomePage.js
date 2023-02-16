@@ -45,7 +45,7 @@ function Home() {
   const handleChange = async (data) => {
     setImages(data);
   };
-
+  console.log("images1images1",images1);
   // const prev = async () => {
   //   setPrevious(1);
   //   setchangeNext(5);
@@ -138,7 +138,7 @@ function Home() {
       }
       else {
         let Datas = item.likes;
-        let values = Datas.filter((val) => val.walletAddress !== item.walletAddress);
+        let values = Datas.filter((val) => val.walletAddress !== wallet.address);
         let url = "updateLikes";
         let params = {
           nftId: item._id,
@@ -192,7 +192,7 @@ function Home() {
               <Grid lg={12} xs={12} container alignItems="flex-start" direction="column" sx={{ padding: "0% 8%" }}>
                 <Image src={BannerText} fluid alt="image" width={600} />
               </Grid>
-              <Grid lg={12} xs={12} container justifyContent={{ lg: "flex-end", xs: "center" }} alignItems="flex-start" sx={{ padding: "2% 4%" }}>
+              <Grid lg={12} xs={12} container justifyContent={{ lg: "flex-end", xs: "center" }} alignItems="flex-start"   >
                 {/* <Image src={circle} width="" height="" fluid alt="image" className="home_circle" /> */}
                 <Card body className="homefirstcard">
                   <Stack gap={2}>
@@ -202,9 +202,9 @@ function Home() {
                         <Grid lg={3} xs={3} container justifyContent="flex-end">
                           <Box sx={{ backgroundColor: "#3e3e4f", color: "darkgrey", borderRadius: "10px", width: "100%" }} >
                             <Grid lg={12} xs={12} container justifyContent="space-between" alignItems="center" sx={{ paddingLeft: "6%" }}>
-                              <font size={1} className="text-light" >{images1?.likes?.length}</font>
+                              <font size={1} className="text-light mx-auto" >{images1?.likes?.length}</font>
                               {images1.likes && images1.likes.filter((val) => val.walletAddress === wallet.address).length > 0 ? (<>
-                                <Avatar className="heartslike pointer" onClick={() => updateLikes("dislike", images1)}><IoMdHeart style={{ color: "white" }} size={14} /></Avatar>
+                                <Avatar className="heartslike pointer   " onClick={() => updateLikes("dislike", images1)}><IoMdHeart style={{ color: "white" }} size={14} /></Avatar>
                               </>) : (<>
                                 <Avatar className="heartsdislike pointer" onClick={() => updateLikes("like", images1)}><IoMdHeart style={{ color: "white" }} size={14} /></Avatar>
                               </>)}
@@ -213,13 +213,13 @@ function Home() {
                         </Grid>
                       </Grid>
                     </Grid>
-                    <Grid lg={12} xs={12} container alignItems="center" className="pointer" role="presentation" onClick={() => { navigate("/profile") }}>
+                    <Grid lg={12} xs={12} container alignItems="center" className="pointer" role="presentation" onClick={() => { navigate("/profile",{state:{name:images1}}) }}>
                       {images1?.ownerProfile ? (<>
-                        <Image src={process.env.REACT_APP_S3_LINK + images1?.ownerProfile} className="home-rightlogo img-zoom-animation" alt="homeimg" fluid width="25" height="25" />
+                        <Image src={process.env.REACT_APP_S3_LINK + images1?.ownerProfile} className="home-rightlogo rounded-circle img-zoom-animation" alt="homeimg" fluid width="25" height="25" />
                         <small className="text-light text-capitalize mx-2">{images1?.ownerName?.length > 10 ? images1?.ownerName?.slice(0, 12) : images1?.ownerName}</small>
                       </>) : (<>
                         <Avatar sx={{ width: "20px", height: "20px" }} />
-                        <small className="text-light text-capitalize mx-2">{images1?.walletAddress?.slice(0, 5) + "..." + images1?.walletAddress?.slice(-5)}</small>
+                        <small className="text-light text-capitalize  mx-2">{images1?.walletAddress?.slice(0, 5) + "..." + images1?.walletAddress?.slice(-5)}</small>
                       </>)}
                     </Grid>
                     <Grid lg={12} xs={12} container justifyContent={{ lg: "flex-start", xs: "center" }}>
@@ -229,53 +229,53 @@ function Home() {
                     </Grid>
                     <Grid lg={12} xs={12} container justifyContent={{ lg: "flex-start", xs: "center" }} className="mt-1">
                       <Grid lg={7.4} xs={12} container>
-                        <Button className="btns placebidcards" onClick={() => setOpen(true)}>Place bid</Button>
+                        <Button className="btns placebidcards" onClick={() => setOpen(true)}>Place Bid</Button>
                       </Grid>
                     </Grid>
                   </Stack>
                 </Card>
               </Grid>
             </Grid>
-            <Grid lg={5} xs={12} container justifyContent={{ lg: "flex-start", xs: "flex-start" }}>
+            <Grid lg={5} md={5} xs={12}  justifyContent={{ lg: "flex-start", xs: "flex-start" }}>
               <Stack gap={4}>
-                <Grid lg={12} xs={12} container sx={{ position: "relative" }} justifyContent="center" className="">
+                <Grid lg={12} xs={12}  sx={{ position: "relative" }} justifyContent="center" className="">
                   {images1?.nftStatus === "onAuction" ? (<>
-                    <Grid lg={5} xs={7.2} container className="timermobileview" justifyContent="center" alignItems="center">
+                    <Grid lg={5} xs={7.2}  className="timermobileview mx-5" justifyContent="center" alignItems="center">
                       <CountdownTimer targetDate={images1?.soldTime} />
                     </Grid>
                   </>) : (<></>)}
-                  <div className="featureCards1 imgzindex">
-                    <Spinner animation="grow" size="sm" className="mr-2" variant="danger" />
-                    <small className="text-green popinsSm">Trending Now</small>
+                  <div className="featureCards1 imgzindex mx-3">
+                    <Spinner animation="grow" size="sm" className="ml-3" variant="danger" />
+                    <small className="text-green popinsSm mx-3">Trending Now</small>
                   </div>
                   <img src={!images1?.nftImage ? "" : process.env.REACT_APP_S3_LINK + images1?.nftImage} alt="homeimg" className="nftsliveimg" />
                 </Grid>
-                <Grid lg={12} xs={12} container justifyContent={{ lg: "center", xs: "center" }} alignItems="center">
+                <Grid lg={12} xs={12}  justifyContent={{ lg: "center", xs: "center" }} alignItems="center">
                   {/* <MdOutlineArrowBackIosNew className="text-light pointer" size={24} onClick={() => prev()} /> */}
                   {nfts.map((item, i) => (
-                    <img key={i} src={!item?.nftImage ? "" : process.env.REACT_APP_S3_LINK + item?.nftImage} className=" pointer" role="presentation" alt="homeimg" style={{ width: "15%", marginLeft: "1%" ,height:"100%",borderRadius:"5px" }} onClick={() => handleChange(item)} />
+                    <img key={i} src={!item?.nftImage ? "" : process.env.REACT_APP_S3_LINK + item?.nftImage} className=" pointer" role="presentation" alt="homeimg" style={{ width: "15%", marginLeft: "1%" ,height:"80px",borderRadius:"5px" }} onClick={() => handleChange(item)} />
                   ))}
                   {/* <MdOutlineArrowForwardIos className="text-light pointer" size={24} onClick={() => next()} /> */}
                 </Grid>
               </Stack>
             </Grid>
           </>) : (<>
-            <Grid lg={12} xs={12} container justifyContent="center" sx={{ padding: "2% 4%" }}>
+            <Grid lg={12} xs={12}  justifyContent="center" sx={{ padding: "2% 4%" }}>
               <Image src={BannerText} fluid alt="image" width={600} />
               {/* <Image src={circle} width="" height="" fluid alt="image" className="home_circle" /> */}
-              <Grid lg={12} xs={12} container sx={{ position: "relative", marginTop: "16%" }} justifyContent="center">
+              <Grid lg={12} xs={12}  sx={{ position: "relative", marginTop: "16%" }} justifyContent="center">
                 {images1?.nftStatus === "onAuction" ? (<>
-                  <Grid lg={6} xs={8} container className="timermobileview" justifyContent="center" alignItems="center">
+                  <Grid lg={6} xs={8}  className="timermobileview mx-5" justifyContent="center" alignItems="center">
                     <CountdownTimer targetDate={images1?.soldTime} />
                   </Grid>
                 </>) : (<></>)}
-                <div className="featureCards2 imgzindex">
+                <div className="featureCards2 imgzindex mx-3">
                   <Spinner animation="grow" size="sm" className="mr-2" variant="danger" />
                   <small className="text-green popinsSm">Trending Now</small>
                 </div>
                 <img src={!images1?.nftImage ? "" : process.env.REACT_APP_S3_LINK + images1?.nftImage} className="img-fluid timertrendingimg" alt="homeimg" />
               </Grid>
-              <Grid lg={12} xs={12} container justifyContent={{ lg: "center", xs: "center" }} alignItems="center" className="mt-3">
+              <Grid lg={12} xs={12}  justifyContent={{ lg: "center", xs: "center" }} alignItems="center" className="mt-3">
                 {nfts.map((item, i) => (
                   <img key={i} src={!item?.nftImage ? "" : process.env.REACT_APP_S3_LINK + item?.nftImage} className="img-fluid pointer sliderimginhomepage" role="presentation" alt="homeimg" onClick={() => handleChange(item)} />
                 ))}
@@ -288,7 +288,7 @@ function Home() {
                       <Grid lg={3} xs={3} container justifyContent="flex-end">
                         <Box sx={{ backgroundColor: "#3e3e4f", color: "darkgrey", borderRadius: "10px", width: "100%" }} >
                           <Grid lg={12} xs={12} container justifyContent="space-between" alignItems="center" sx={{ paddingLeft: "6%" }}>
-                            <font size={1} className="text-light" >{images1?.likes?.length}</font>
+                            <font size={1} className="text-light mx-auto" >{images1?.likes?.length}</font>
                             {images1.likes && images1.likes.filter((val) => val.walletAddress === wallet.address).length > 0 ? (<>
                               <Avatar className="heartslike pointer" onClick={() => updateLikes("dislike", images1)}><IoMdHeart style={{ color: "white" }} size={14} /></Avatar>
                             </>) : (<>
@@ -430,7 +430,7 @@ function Home() {
                     <Grid lg={12} xs={12} container sx={{ padding: "2% 5%" }}>
                       <Grid lg={12} xs={12} container justifyContent="space-between" alignItems="center">
                         <h6 className="cardsworld m-0">{item?.nftName > 18 ? item?.nftName?.slice(0, 18) + ".." : item?.nftName}</h6>
-                        <span className="cardsworld"><BsThreeDots /></span>
+                        {/* <span className="cardsworld"><BsThreeDots /></span> */}
                       </Grid>
                     </Grid>
                     <Grid lg={12} xs={12} container className="" justifyContent="space-between" alignItems="center" sx={{ padding: "2% 5%" }}>
@@ -447,7 +447,7 @@ function Home() {
                         {/* <span className="iocircle1">{item.text3}<IoHeartCircleSharp className="circleSharp" size={34} /></span> */}
                         <Box sx={{ backgroundColor: "#3e3e4f", color: "darkgrey", borderRadius: "10px", width: "100%" }} >
                           <Grid lg={12} xs={12} container justifyContent="space-between" alignItems="center" sx={{ paddingLeft: "6%" }}>
-                            <font size={1} className="text-light" >{item?.likes?.length}</font>
+                            <font size={1} className="text-light mx-auto" >{item?.likes?.length}</font>
                             {item.likes && item.likes.filter((val) => val.walletAddress === wallet.address).length > 0 ? (<>
                               <Avatar className="heartslike pointer" onClick={() => updateLikes("dislike", item)}><IoMdHeart style={{ color: "white" }} size={14} /></Avatar>
                             </>) : (<>
